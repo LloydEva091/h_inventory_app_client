@@ -95,7 +95,7 @@ function MealForm({ mealType, mealItems, setItem, recipesSelection }) {
               id="menu-currency"
               type="number"
               name="currency"
-              value={item.currecy}
+              // value={item.currecy}
               // onChange={(e) => handleItemChange(index, e)}
             >
               <RecipeInfo recipe={item.recipe} property="currency"></RecipeInfo>

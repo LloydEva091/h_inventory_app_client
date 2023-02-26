@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import useAuth from '../../hooks/useAuth'
-import LineChart from '../../components/LineChart'
-import BarChart from '../../components/BarChart'
+import useAuth from '../hooks/useAuth'
+import LineChart from './LineChart'
+import BarChart from './BarChart'
 
-import WeeklyDisplay from '../../components/WeeklyDisplay'
+import WeeklyDisplay from './WeeklyDisplay'
 
 
 const Dashboard = () => {
@@ -145,12 +145,12 @@ const Dashboard = () => {
                                     </div>
                                     <span className="text-center text-white font-semibold z-10 pointer-events-none">Create Order List</span>
                                 </Link>
-                                <Link to="/dash/recipes" className="b mx-auto h-16 w-64 flex justify-center items-center">
+                                <Link to="/dash/weekly" className="b mx-auto h-16 w-64 flex justify-center items-center">
                                     <div className="i h-20 w-64 bg-gradient-to-br from-cyan-600 to-cyan-300 items-center rounded-xl shadow-xl cursor-pointer absolute overflow-hidden transform hover:scale-x-110 hover:scale-y-105 transition duration-300 ease-out">
                                     </div>
-                                    <span className="text-center text-white font-semibold z-10 pointer-events-none">Create Monthly Menu Plan</span>
+                                    <span className="text-center text-white font-semibold z-10 pointer-events-none">Manage Weekly Menu Plan</span>
                                 </Link>
-                                <Link to="/dash/menus" className="b mx-auto h-16 w-64 flex justify-center items-center">
+                                <Link to="/dash/weekly/new" className="b mx-auto h-16 w-64 flex justify-center items-center">
                                     <div className="i h-20 w-64 bg-gradient-to-br from-cyan-600 to-cyan-300 items-center rounded-xl shadow-xl cursor-pointer absolute overflow-hidden transform hover:scale-x-110 hover:scale-y-105 transition duration-300 ease-out">
                                     </div>
                                     <span className="text-center text-white font-semibold z-10 pointer-events-none">Create Weekly Menu Plan</span>

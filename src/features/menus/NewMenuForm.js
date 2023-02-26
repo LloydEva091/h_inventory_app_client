@@ -7,6 +7,7 @@ import { MY_CURRENCY } from "../../config/constant";
 import MealForm from "./MealForm";
 import AddMenuModalView from "./AddMenuModalView";
 import useRecipeDetails from "../../hooks/useRecipeDetails";
+import ModalView from '../../components/ModalView'
 
 const NewMenuForm = ({ users }) => {
   const {
@@ -58,84 +59,7 @@ const NewMenuForm = ({ users }) => {
     const concatenated = breakfasts.concat(lunches, dinners);
     setAllMeals(concatenated);
   }, [breakfasts, lunches, dinners]);
-  // console.log(allMeals)
 
-  // const { recipesList, isLoading:totalCostLoading } = useTotalCost(allMeals);
-  // console.log("total cost",recipesList)
-
-  // Call useRecipeDetails outside of the useEffect callback
-  // const recipeDetails = useRecipeDetails(breakfasts.map((meal) => meal.recipe));
-  // console.log(recipeDetails)
-
-  // useEffect(() => {
-  //   const mealTotal = recipeDetails.length > 0 ? recipeDetails.reduce(
-  //     (accumulator, currentValue) => accumulator + currentValue.totalCost,0): 0;
-  //   setTotalCosts(mealTotal);
-  // }, [recipeDetails]);
-
-  // console.log("totalCost", totalCosts);
-
-  // const totalCost = breakfasts.reduce(
-  //   (acc, curr) => acc + parseInt(RecipeCost({ recipeId: curr.recipe })),
-  //   0
-  // );
-
-  // const [totalCost, setTotalCost] = useState(0);
-
-  // useEffect(() => {
-  //   const calculateTotalCost = () => {
-  //     let total = 0;
-  //     breakfasts.forEach((item) => {
-  //       if (item.recipe) {
-  //         total += (item.recipe ? Number(<RecipeCost recipeId={item.recipe} />) : 0);
-  //       }
-  //     });
-  //     lunches.forEach((item) => {
-  //       if (item.recipe) {
-  //         total +=  (item.recipe ? Number(<RecipeCost recipeId={item.recipe} />) : 0);
-  //       }
-  //     });
-  //     dinners.forEach((item) => {
-  //       if (item.recipe) {
-  //         total +=  (item.recipe ? Number(<RecipeCost recipeId={item.recipe} />) : 0);
-  //         // console.log(total)
-  //       }
-  //     });
-  //     setTotalCost(total);
-  //   };
-
-  //   calculateTotalCost();
-  // }, [breakfasts, lunches, dinners]);
-
-  // let total = 0
-  // let test2 = ''
-  // let testContent = breakfasts.forEach((item) => {
-  //   console.log("inside",item.recipe)
-  //   if (item.recipe) {
-  //     test2 = <RecipeCost recipeId={item.recipe} />
-  //     console.log(test2)
-  //     total += (item.recipe ? Number(<RecipeCost recipeId={item.recipe} />) : 0);
-  //   }
-  // });
-  // console.log(testContent)
-
-  // const testContent = <RecipeCost breakfast={breakfasts}></RecipeCost>
-  // console.log(testContent)
-  //   let total = 0;
-  //   const breakfastTotal = breakfasts.map((item) => {
-  //     return item.recipe ? <RecipeCost key={item.recipe} recipeId={item.recipe} /> : 0;
-  //   }).reduce((acc, cost) => acc + cost, 0);
-
-  //   const lunchTotal = lunches.map((item) => {
-  //     return item.recipe ? <RecipeCost key={item.recipe} recipeId={item.recipe} /> : 0;
-  //   }).reduce((acc, cost) => acc + cost, 0);
-
-  //   const dinnerTotal = dinners.map((item) => {
-  //     return item.recipe ? <RecipeCost key={item.recipe} recipeId={item.recipe} /> : 0;
-  //   }).reduce((acc, cost) => acc + cost, 0);
-  //   total = breakfastTotal+lunchTotal+dinnerTotal
-  //   setTotalCost(total);
-  // };
 
   // if (recipeIsLoading) {
   //   <div>Loading...</div>;
@@ -227,7 +151,7 @@ const NewMenuForm = ({ users }) => {
       recipesSelection={recipeSelections}
     ></MealForm>
   );
-  const dinnerConent = (
+  const dinnerContent = (
     <MealForm
       mealType="dinner"
       setItem={setDinners}
@@ -265,21 +189,21 @@ const NewMenuForm = ({ users }) => {
 
             </div>
             <div className="col-span-1">
-              <AddMenuModalView
+              <ModalView
                 modalContent={breakfastContent}
-                mealLabel="Breakfast"
+                label="Breakfast"
                 action="Add"
-              ></AddMenuModalView>
-              <AddMenuModalView
+              ></ModalView>
+              <ModalView
                 modalContent={lunchContent}
-                mealLabel="Lunch"
+                label="Lunch"
                 action="Add"
-              ></AddMenuModalView>
-              <AddMenuModalView
-                modalContent={dinnerConent}
-                mealLabel="Dinner"
+              ></ModalView>
+              <ModalView
+                modalContent={dinnerContent}
+                label="Dinner"
                 action="Add"
-              ></AddMenuModalView>
+              ></ModalView>
             </div>
           </div>
 

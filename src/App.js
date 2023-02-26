@@ -5,31 +5,38 @@ import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
 import DashLayout from "./components/DashLayout";
 import Welcome from "./features/auth/Welcome";
-
-import Dashboard from "./features/auth/Dashboard";
+import Dashboard from "./components/Dashboard";
 import Missing from "./components/Missing";
+import Prefetch from "./features/auth/Prefetch";
+import PersistLogin from "./features/auth/PersistLogin";
+import RequireAuth from "./features/auth/RequireAuth";
+import { ROLES } from "./config/constant";
 
+// Users Import
 import UsersList from "./features/users/UsersList";
 import EditUser from "./features/users/EditUser";
 import NewUserForm from "./features/users/NewUserForm";
 
-import Prefetch from "./features/auth/Prefetch";
-import PersistLogin from "./features/auth/PersistLogin";
-
-import RequireAuth from "./features/auth/RequireAuth";
-import { ROLES } from "./config/constant";
-
+// Stocks Import
 import StockList from "./features/stocks/StocksList";
 import NewStock from "./features/stocks/NewStock";
 import EditStock from "./features/stocks/EditStock";
 
+// Recipes Import
 import RecipesList from "./features/recipes/RecipesList";
 import NewRecipe from "./features/recipes/NewRecipe";
 import EditRecipe from "./features/recipes/EditRecipe";
 
+// Menus Import
 import MenusList from "./features/menus/MenusList";
 import NewMenu from "./features/menus/NewMenu";
 import EditMenu from "./features/menus/EditMenu";
+
+// Weekly Menus Import
+import WeeklyMenusList from "./features/weekly/WeeklyMenusList";
+import NewWeeklyMenu from "./features/weekly/NewWeeklyMenu";
+import EditWeeklyMenu from "./features/weekly/EditWeeklyMenu";
+
 
 function App() {
   return (
@@ -68,6 +75,13 @@ function App() {
                   <Route index element={<MenusList />} />
                   <Route path=":id" element={<EditMenu />} />
                   <Route path="new" element={<NewMenu />} />
+                </Route>
+
+                {/* Weekly Menu Routes */}
+                <Route path="weekly">
+                  <Route index element={<WeeklyMenusList />} />
+                  <Route path=":id" element={<EditWeeklyMenu />} />
+                  <Route path="new" element={<NewWeeklyMenu />} />
                 </Route>
 
                 {/* Admin Routes */}

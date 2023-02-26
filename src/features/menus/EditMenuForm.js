@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import useStockDetails from "../../hooks/useStockDetails";
 import useRecipeDetails from "../../hooks/useRecipeDetails";
 import AddMenuModalView from "./AddMenuModalView";
+import ModalView from '../../components/ModalView'
 import MealForm from "./MealForm";
 import useAuth from "../../hooks/useAuth";
 
@@ -68,22 +69,10 @@ const EditMenuForm = ({ menu }) => {
   const [dinners, setDinners] = useState([...menu.dinners]);
   const [userId, setUserId] = useState(menu.user);
 
-  // console.log("lunchedit",currency)
-
-  // const [completed, setCompleted] = useState(menu.completed)
-
   const filterRecipesByUser = Object.values(recipes?.entities ?? {}).filter(
     (recipe) => recipe.user == userId
   );
 
-  // useEffect(() => {
-  //   const totalICost = ingredients.reduce((accumulator, currentValue) => {
-  //     const icostValue = currentValue.iamount * currentValue.icost || 0;
-  //     return isNaN(icostValue) ? accumulator : accumulator + Number(icostValue);
-  //   }, 0);
-
-  //   setTotalCost(totalICost);
-  // }, [ingredients]);
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
@@ -171,7 +160,7 @@ const EditMenuForm = ({ menu }) => {
       recipesSelection={recipeSelections}
     ></MealForm>
   );
-  const dinnerConent = (
+  const dinnerContent = (
     <MealForm
       mealType="dinner"
       setItem={setDinners}
@@ -233,21 +222,21 @@ const EditMenuForm = ({ menu }) => {
               <br />
             </div>
             <div className="col-span-1">
-              <AddMenuModalView
+              <ModalView
                 modalContent={breakfastContent}
-                mealLabel="Breakfast"
+                label="Breakfast"
                 action="Edit"
-              ></AddMenuModalView>
-              <AddMenuModalView
+              ></ModalView>
+              <ModalView
                 modalContent={lunchContent}
-                mealLabel="Lunch"
+                label="Lunch"
                 action="Edit"
-              ></AddMenuModalView>
-              <AddMenuModalView
-                modalContent={dinnerConent}
-                mealLabel="Dinner"
+              ></ModalView>
+              <ModalView
+                modalContent={dinnerContent}
+                label="Dinner"
                 action="Edit"
-              ></AddMenuModalView>
+              ></ModalView>
             </div>
           </div>
 
