@@ -2,6 +2,9 @@ import { useGetMenusQuery } from "./menusApiSlice";
 import Menu from "./Menu";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import sortList from "../../utils/sortList";
+
 const MenusList = () => {
   const { userId } = useAuth();
   const {
@@ -11,12 +14,14 @@ const MenusList = () => {
     isError,
     error,
   } = useGetMenusQuery("menussList", {
-    pollingInterval: 60000,
+    pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
 
   let content;
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   if (isLoading) content = <p>Loading...</p>;
 
@@ -36,9 +41,59 @@ const MenusList = () => {
     );
 
 
-    const tableContent = filteredMenus?.length
-      ? filteredMenus.map((menu) => <Menu key={menu._id} props={menu._id} />)
-      : null;
+         // sort list via name property
+         const sortedRecipes = sortList(filteredMenus, "name");
+
+         // Calculate the index of the first and last item to display
+         const indexOfLastItem = currentPage * itemsPerPage;
+         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+     
+         // Slice the array to display only the items for the current page
+         const menusToDisplay = sortedRecipes.slice(
+           indexOfFirstItem,
+           indexOfLastItem
+         );
+    
+         const tableContent = menusToDisplay?.length
+         ? menusToDisplay.map((menu) => <Menu key={menu._id} props={menu._id} />)
+         : null;
+
+        // Calculate the total number of pages
+        const totalPages = Math.ceil(sortedRecipes.length / itemsPerPage);
+    
+        // Generate an array of page numbers to display in the pagination control
+        const pageNumbers = [];
+        for (let i = 1; i <= totalPages; i++) {
+          pageNumbers.push(i);
+        }
+    
+        const handlePageClick = (pageNumber) => {
+          setCurrentPage(pageNumber);
+        };
+    
+        const pagination = (
+          <div className="flex justify-center mt-8">
+            <nav>
+              <ul className="flex">
+                {pageNumbers.map((pageNumber) => (
+                  <li key={pageNumber}>
+                    <button
+                      className={`${
+                        currentPage === pageNumber ? "bg-blue-300" : "bg-gray-500"
+                      } hover:bg-blue-700 text-sm text-white font-bold py-2 px-4 rounded`}
+                      onClick={() => handlePageClick(pageNumber)}
+                      disabled={currentPage === pageNumber}
+                    >
+                      {pageNumber}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
+        );
+
+
 
     // console.log(tableContent)
 
@@ -71,6 +126,7 @@ const MenusList = () => {
               </table>
             </div>
           </div>
+          {pagination}
         </div>
       </>
     );

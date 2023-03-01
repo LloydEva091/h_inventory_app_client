@@ -4,7 +4,8 @@ import { useAddNewWeeklyMenuMutation } from "./weeklyMenusApiSlice";
 import { useGetMenusQuery } from "../menus/menusApiSlice";
 import WeeklyMenuSelectionForm from "./WeeklyMenuSelectionForm";
 import ModalView from "../../components/ModalView";
-import getWeekNumber from './getWeekNumber'
+import getWeekNumber from '../../utils/getWeekNumber'
+import getYear from '../../utils/getYear'
 
 const NewMenuForm = ({ users }) => {
   const {
@@ -159,15 +160,6 @@ const NewMenuForm = ({ users }) => {
     return `${year}-${month}-${day}`;
   };
 
-
-  const getYear = (startDate) => {
-    // Create a new date object from the start date string
-    const date = new Date(startDate);
-    // Get the year from the date object
-    const year = date.getFullYear();
-    // Return the year as a number
-    return year;
-  };
 
   const mondayContent = (
     <WeeklyMenuSelectionForm

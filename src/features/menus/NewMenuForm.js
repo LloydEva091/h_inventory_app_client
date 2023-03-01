@@ -2,12 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAddNewMenuMutation } from "./menusApiSlice";
 import { useGetRecipesQuery } from "../recipes/recipesApiSlice";
-import { MY_CURRENCY } from "../../config/constant";
-// import { useSelector } from "react-redux";
 import MealForm from "./MealForm";
-import AddMenuModalView from "./AddMenuModalView";
-import useRecipeDetails from "../../hooks/useRecipeDetails";
 import ModalView from '../../components/ModalView'
+import sortList from '../../utils/sortList'
 
 const NewMenuForm = ({ users }) => {
   const {
@@ -61,12 +58,12 @@ const NewMenuForm = ({ users }) => {
   }, [breakfasts, lunches, dinners]);
 
 
-  // if (recipeIsLoading) {
-  //   <div>Loading...</div>;
-  // }
-  // if(recipeIsError){
-  //   <div>{recipeError}</div>
-  // }
+  if (recipeIsLoading) {
+    <div>Loading...</div>;
+  }
+  if(recipeIsError){
+    <div>{recipeError}</div>
+  }
 
   useEffect(() => {
     if (isSuccess) {
@@ -79,21 +76,11 @@ const NewMenuForm = ({ users }) => {
     }
   }, [isSuccess, navigate]);
 
-  // Get total cost of menu, check if the current breakfast cost is empty if so return 0, also checks if the value is not a number if so return current value or 0
-  // useEffect(() => {
-  //   const totalICost = breakfasts.reduce((accumulator, currentValue) => {
-  //     const icostValue = currentValue.iamount * currentValue.icost || 0;
-  //     return isNaN(icostValue) ? accumulator : accumulator + Number(icostValue);
-  //   }, 0);
-
-  //   setTotalCost(totalICost);
-  // }, [breakfasts]);
 
   const onNameChanged = (e) => setName(e.target.value);
 
   const canSave =
-  // currency, menuCost,
-    [userId, name, breakfasts, lunches, dinners, allMeals].every(
+    [userId, name, breakfasts, lunches, dinners].every(
       Boolean
     ) && !isLoading;
 
@@ -106,22 +93,14 @@ const NewMenuForm = ({ users }) => {
         name,
         breakfasts,
         lunches,
-        dinners,
-        allMeals
+        dinners
       });
     }
   };
 
-  // const currencySelection = MY_CURRENCY.map((opt) => {
-  //   return (
-  //     <option key={opt.id} value={opt.name}>
-  //       {" "}
-  //       {opt.name}
-  //     </option>
-  //   );
-  // });
 
-  const recipeSelections = filterRecipesByUser.map((opt) => {
+  const sortedRecipe = sortList(filterRecipesByUser, 'name')
+  const recipeSelections = sortedRecipe.map((opt) => {
     return (
       <option key={opt.id} value={opt.id}>
         {opt.name}

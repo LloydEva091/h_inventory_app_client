@@ -37,6 +37,8 @@ import WeeklyMenusList from "./features/weekly/WeeklyMenusList";
 import NewWeeklyMenu from "./features/weekly/NewWeeklyMenu";
 import EditWeeklyMenu from "./features/weekly/EditWeeklyMenu";
 
+// Checkout
+import Checkout from "./features/checkout/Checkout";
 
 function App() {
   return (
@@ -56,6 +58,11 @@ function App() {
               <Route path="dash" element={<DashLayout />}>
                 <Route index element={<Dashboard />} />
 
+                {/* Checkout Routes */}
+                <Route path="checkout">
+                  <Route index element={<Checkout />} />
+                </Route>
+
                 {/* Stock Routes */}
                 <Route path="stocks">
                   <Route index element={<StockList />} />
@@ -69,7 +76,7 @@ function App() {
                   <Route path=":id" element={<EditRecipe />} />
                   <Route path="new" element={<NewRecipe />} />
                 </Route>
-                
+
                 {/* Menu Routes */}
                 <Route path="menus">
                   <Route index element={<MenusList />} />

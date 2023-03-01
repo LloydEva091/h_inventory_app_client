@@ -2,6 +2,8 @@ import { useGetRecipesQuery } from "./recipesApiSlice";
 import Recipe from "./Recipe";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { useState } from "react";
+import sortList from "../../utils/sortList";
 const RecipesList = () => {
   const { userId } = useAuth();
   const {
@@ -11,12 +13,15 @@ const RecipesList = () => {
     isError,
     error,
   } = useGetRecipesQuery("recipessList", {
-    pollingInterval: 60000,
+    pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
 
   let content;
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
   if (isLoading) content = <p>Loading...</p>;
 
@@ -31,14 +36,58 @@ const RecipesList = () => {
       (recipe) => recipe.user === userId
     );
 
-    const { ids } = recipes;
-    // console.log(ids)
+     // sort list via name property
+     const sortedRecipes = sortList(filteredRecipes, "name");
 
-    const tableContent = filteredRecipes?.length
-      ? filteredRecipes.map((recipe) => <Recipe key={recipe._id} props={recipe._id} />)
-      : null;
+     // Calculate the index of the first and last item to display
+     const indexOfLastItem = currentPage * itemsPerPage;
+     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+ 
+     // Slice the array to display only the items for the current page
+     const recipesToDisplay = sortedRecipes.slice(
+       indexOfFirstItem,
+       indexOfLastItem
+     );
 
-    // console.log(tableContent)
+     const tableContent = recipesToDisplay?.length
+     ? recipesToDisplay.map((recipe) => <Recipe key={recipe._id} props={recipe._id} />)
+     : null;
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(sortedRecipes.length / itemsPerPage);
+
+    // Generate an array of page numbers to display in the pagination control
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+
+    const handlePageClick = (pageNumber) => {
+      setCurrentPage(pageNumber);
+    };
+
+    const pagination = (
+      <div className="flex justify-center mt-8">
+        <nav>
+          <ul className="flex">
+            {pageNumbers.map((pageNumber) => (
+              <li key={pageNumber}>
+                <button
+                  className={`${
+                    currentPage === pageNumber ? "bg-blue-300" : "bg-gray-500"
+                  } hover:bg-blue-700 text-sm text-white font-bold py-2 px-4 rounded`}
+                  onClick={() => handlePageClick(pageNumber)}
+                  disabled={currentPage === pageNumber}
+                >
+                  {pageNumber}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    );
+
 
     content = (
       <>
@@ -69,6 +118,7 @@ const RecipesList = () => {
               </table>
             </div>
           </div>
+          {pagination}
         </div>
       </>
     );

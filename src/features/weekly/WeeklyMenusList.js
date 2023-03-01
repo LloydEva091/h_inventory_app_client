@@ -2,8 +2,7 @@ import { useGetWeeklyMenusQuery } from "./weeklyMenusApiSlice";
 import WeeklyMenu from "./WeeklyMenu";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import getWeekNumber from "./getWeekNumber";
-import { useState, useEffect } from "react";
+import getWeekNumber from "../../utils/getWeekNumber";
 
 const WeeklyMenusList = () => {
   const { userId } = useAuth();

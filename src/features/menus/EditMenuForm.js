@@ -18,13 +18,9 @@ import {
   selectRecipeByUserId,
   useGetRecipesQuery,
 } from "../recipes/recipesApiSlice";
-import { useSelector } from "react-redux";
-import useStockDetails from "../../hooks/useStockDetails";
-import useRecipeDetails from "../../hooks/useRecipeDetails";
-import AddMenuModalView from "./AddMenuModalView";
 import ModalView from '../../components/ModalView'
 import MealForm from "./MealForm";
-import useAuth from "../../hooks/useAuth";
+import sortList from "../../utils/sortList";
 
 const EditMenuForm = ({ menu }) => {
   const {
@@ -73,6 +69,7 @@ const EditMenuForm = ({ menu }) => {
     (recipe) => recipe.user == userId
   );
 
+  // console.log("FFF",menu)
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
@@ -90,7 +87,8 @@ const EditMenuForm = ({ menu }) => {
   const onNameChanged = (e) => setName(e.target.value);
   const onCancelClick = async (e) => await navigate("/dash/menus");
 
-  const recipeSelections = filterRecipesByUser.map((opt) => {
+  const sortedRecipe = sortList(filterRecipesByUser, 'name') 
+  const recipeSelections = sortedRecipe.map((opt) => {
     return (
       <option key={opt.id} value={opt.id}>
         {opt.name}

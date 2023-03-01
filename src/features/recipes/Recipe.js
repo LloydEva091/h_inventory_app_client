@@ -33,7 +33,8 @@ const Recipe = ({ props }) => {
 
   const DisStockName = ({ stock }) => {
     const stockName = useStockDetails(stock);
-    return stockName.name;
+    // console.log(stockName)
+      return stockName?.name || ''
   };
 
   const disclosureContent = (data) => {

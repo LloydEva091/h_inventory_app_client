@@ -1,7 +1,7 @@
-  // This function takes a start date as a parameter
-  const getWeekNumber = (startDate) => {
-    // Create a new Date object from the start date
-    const date = new Date(startDate);
+  // This function takes a date as a parameter
+  const getWeekNumber = (oDate) => {
+    // Create a new Date object from the date
+    const date = new Date(oDate);
     // Set the time of the date object to 00:00:00.000
     date.setHours(0, 0, 0, 0);
     // Calculate the date of the Thursday in the current week

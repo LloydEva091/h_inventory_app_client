@@ -34,21 +34,15 @@ const Stock = ({ stockId }) => {
                 {/* <td className=" py-3 px-6 text-left">{stock.user}</td> */}
                 <td className=" py-3 px-2 text-left">{stock.categories}</td>
                 <td className=" py-3 px-2 text-left">{`${currencySign(stock.currency)} ${stock.cost}`}</td>
-                {/* <td className=" py-3 px-6 text-left">{stock.currency}</td> */}
+                <td className=" py-3 px-2 text-left">{`${currencySign(stock.currency)} ${stock.per_cost}`}</td>
                 <td className=" py-3 px-2">{stock.current_stock}</td>
+                <td className=" py-3 px-2 text-left">{stock.unit}</td>
+                <td className=" py-3 px-2">{stock.per_stock}</td>
+                <td className=" py-3 px-2 text-left">{stock.per_unit}</td>
                 <td className=" py-3 px-2 text-left">{stock.min_stock}</td>
                 <td className=" py-3 px-2 text-left">{stock.max_stock}</td>
-                <td className=" py-3 px-2 text-left">{stock.unit}</td>
-                {/* <td className="table__cell stock__status">
-                    {stock.completed
-                        ? <span className="stock__status--completed">Completed</span>
-                        : <span className="stock__status--open">Open</span>
-                    }
-                </td> */}
                 <td className=" py-3 px-2 text-left">{stock.stock_status}</td>
-                {/* <td className=" py-3 px-6 text-left">{stock.image}</td> */}
                 <td className=" py-3 px-2 text-left">{updated}</td>
-
                 <td className="table__cell">
                     <button
                         className="py-3 px-6 text-center"

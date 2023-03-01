@@ -12,6 +12,7 @@ const useMenuDetails = (id) => {
   let breakfasts = []
   let lunches = []
   let dinners = []
+  let user = ''
 
   //   const menu = useSelector(state => selectMenuById(state, id))
   const { menu } = useGetMenusQuery("getMenus", {
@@ -28,7 +29,9 @@ const useMenuDetails = (id) => {
     breakfasts = []
     lunches = []
     dinners = []
+    user = ''
   }else {
+    user = menu.user
     menuCost = menu.menuCost
     name = menu.name
     currency = menu.currency
@@ -37,7 +40,7 @@ const useMenuDetails = (id) => {
     dinners = menu.dinners
   }
 
-  return {name,menuCost,currency, breakfasts,lunches, dinners};
+  return {user,name,menuCost,currency, breakfasts,lunches, dinners};
 
 };
 

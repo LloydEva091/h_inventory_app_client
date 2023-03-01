@@ -1,6 +1,17 @@
+// This code defines a Redux slice for managing stocks data with RTK Query. The slice provides endpoints for querying, creating, updating, and deleting stocks. It also defines selectors for selecting stocks data based on various criteria, including filtering by user ID.
+
+// The code uses createEntityAdapter from @reduxjs/toolkit to create an adapter for managing stocks data in the Redux store. This allows for more efficient updates and lookups of stocks data. The initialState for the adapter is obtained using the getInitialState function provided by the adapter.
+
+// The apiSlice function from @reduxjs/toolkit/query is used to define the endpoints for querying, creating, updating, and deleting stocks. The getStocks endpoint queries for all stocks and transforms the response data to a normalized form using the setAll function provided by the adapter. The addNewStock, updateStock, updateMultipleStock, and deleteStock endpoints correspond to creating, updating, and deleting stocks, respectively. The invalidatesTags option is used to invalidate cache tags for the affected stocks when updates or deletions occur.
+
+// The selectStocksData selector uses createSelector from reselect to memoize the result of selecting the normalized stocks data from the store. The selectStockByUserId selector uses createSelector to filter the stocks data by user ID.
+
+// Finally, the getSelectors function provided by the adapter is used to create selectors for selecting all stocks, a stock by ID, and stock IDs.
+
 import {
     createSelector,
-    createEntityAdapter
+    createEntityAdapter,
+    createAsyncThunk
 } from "@reduxjs/toolkit";
 import { apiSlice } from "../../app/api/apiSlice"
 
@@ -9,6 +20,33 @@ const stocksAdapter = createEntityAdapter({
 })
 
 const initialState = stocksAdapter.getInitialState()
+
+
+export const updateMultipleStocks = createAsyncThunk(
+    "stocks/updateMultipleStocks",
+    async (stockList, { dispatch }) => {
+      console.log("updateMultipleStocks request initiated with stockList:", stockList);
+      const requests = stockList.map(stockItem => ({
+        url: `/api/stocks/${stockItem.id}`,
+        method: "PUT",
+        body: { ...stockItem }
+      }));
+  
+      const responses = await Promise.all(
+        requests.map(request => dispatch(apiSlice.endpoints.updateStock.initiate(request)))
+      );
+  
+      // Check if any of the requests failed
+      const isError = responses.some(response => response.error);
+  
+      if (isError) {
+        throw new Error("Failed to update one or more stocks.");
+      }
+  
+      return responses.map(response => response.data);
+    }
+  );
+  
 
 export const stocksApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -46,17 +84,48 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
             ]
         }),
         updateStock: builder.mutation({
-            query: initialStock => ({
-                url: '/api/stocks',
+            query: ({ url, body }) => ({
+                url,
                 method: 'PATCH',
-                body: {
-                    ...initialStock,
-                }
+                body
             }),
             invalidatesTags: (result, error, arg) => [
                 { type: 'Stock', id: arg.id }
             ]
         }),
+        // updateStock: builder.mutation({
+        //     query: stockToUpdate => ({
+        //       url: `/api/stocks/${stockToUpdate._id}`,
+        //       method: "PATCH",
+        //       body: { ...stockToUpdate }
+        //     }),
+        //     invalidatesTags: (result, error, arg) => [
+        //       { type: "Stock", id: arg.id }
+        //     ]
+        //   }),
+        // updateMultipleStock: builder.mutation({
+        //     query: stockToUpdateList => ({
+        //       queryFn: async () => {
+        //         const requests = stockToUpdateList.map(stockItem => ({
+        //           url: `/api/stocks/${stockItem._id}`,
+        //           method: 'PATCH',
+        //           body: { ...stockItem },
+        //         }));
+        //         const responses = await Promise.all(requests.map(request => fetch(request.url, {
+        //           method: request.method,
+        //           body: JSON.stringify(request.body),
+        //           headers: {
+        //             'Content-Type': 'application/json'
+        //           }
+        //         })));
+        //         const data = await Promise.all(responses.map(response => response.json()));
+        //         return data;
+        //       },
+        //     }),
+        //     invalidatesTags: (result, error, arg) => [
+        //       { type: 'Stock', id: arg.id },
+        //     ],
+        //   }), 
         deleteStock: builder.mutation({
             query: ({ id }) => ({
                 url: `/api/stocks`,
@@ -71,10 +140,7 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useGetStocksQuery,
-    useAddNewStockMutation,
-    useUpdateStockMutation,
-    useDeleteStockMutation,
+    useGetStocksQuery, useAddNewStockMutation, useUpdateStockMutation, useDeleteStockMutation
 } = stocksApiSlice
 
 // returns the query result object

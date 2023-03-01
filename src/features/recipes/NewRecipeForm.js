@@ -8,10 +8,12 @@ import {
 import {
   MY_RECIPE_CATEGORIES,
   MY_CURRENCY,
+  PER_UNIT,
   MY_UNIT,
 } from "../../config/constant";
 import { useSelector } from "react-redux";
 import useAuth from "../../hooks/useAuth";
+import sortList from "../../utils/sortList";
 
 const NewRecipeForm = ({ users }) => {
   const {
@@ -43,9 +45,9 @@ const NewRecipeForm = ({ users }) => {
   const [ingredients, setIngredients] = useState([
     {
       stock: filterStock[0].id,
-      iamount: '',
-      iunit: MY_UNIT[0].name,
-      icost: '',
+      iamount: "",
+      iunit: PER_UNIT[0].name,
+      icost: "",
       icurrency: MY_CURRENCY[0].name,
     },
   ]);
@@ -67,11 +69,11 @@ const NewRecipeForm = ({ users }) => {
   // Get total cost of recipe, check if the current ingredient cost is empty if so return 0, also checks if the value is not a number if so return current value or 0
   useEffect(() => {
     const totalICost = ingredients.reduce((accumulator, currentValue) => {
-      const icostValue = currentValue.iamount * currentValue.icost || 0;
+      const icostValue = currentValue.icost || 0;
       return isNaN(icostValue) ? accumulator : accumulator + Number(icostValue);
     }, 0);
 
-    setTotalCost(totalICost);
+    setTotalCost(totalICost.toFixed(2));
   }, [ingredients]);
 
   const onNameChanged = (e) => setName(e.target.value);
@@ -90,9 +92,9 @@ const NewRecipeForm = ({ users }) => {
       ...ingredients,
       {
         stock: filterStock[0].id,
-        iamount: 0, 
+        iamount: 0,
         iunit: MY_UNIT[0].name,
-        icost: 0, 
+        icost: 0,
         icurrency: MY_CURRENCY[0].name,
       },
     ]);
@@ -131,7 +133,8 @@ const NewRecipeForm = ({ users }) => {
     }
   };
 
-  const categorySelection = MY_RECIPE_CATEGORIES.map((opt) => {
+  const sortedCat = sortList(MY_RECIPE_CATEGORIES, "name");
+  const categorySelection = sortedCat.map((opt) => {
     return (
       <option key={opt.id} value={opt.name}>
         {" "}
@@ -139,7 +142,7 @@ const NewRecipeForm = ({ users }) => {
       </option>
     );
   });
-  const unitSelection = MY_UNIT.map((opt) => {
+  const unitSelection = PER_UNIT.map((opt) => {
     return (
       <option key={opt.id} value={opt.name}>
         {" "}
@@ -157,33 +160,14 @@ const NewRecipeForm = ({ users }) => {
   });
 
   //console.log(filterStock[0]._id)
-  const ingredientsSelection = filterStock.map((opt) => {
+  const sortedIngredients = sortList(filterStock, "name");
+  const ingredientsSelection = sortedIngredients.map((opt) => {
     return (
       <option key={opt.id} value={opt.id}>
         {opt.name}
       </option>
     );
   });
-
-  // const onResetClick = async (e) => {
-  //     setName('')
-  //     setCategories('')
-  //     setCost('')
-  //     setCurrency('')
-  //     setCurrentRecipe('')
-  //     setMinRecipe('')
-  //     setMaxRecipe('')
-  //     setUnit('')
-  //     setImage('')
-  // }
-  // const options = users.map(user => {
-  //     return (
-  //         <option
-  //             key={user.id}
-  //             value={user.id}
-  //         > {user.username}</option >
-  //     )
-  // })
 
   // console.log(totalCost)
   const errClass = isError ? "errmsg" : "offscreen";
@@ -205,70 +189,69 @@ const NewRecipeForm = ({ users }) => {
 
               <label className="form__label m-2" htmlFor="recipe-name">
                 Name:
+                <input
+                  className={`form__input ${validInputChecker(
+                    name
+                  )} text-black m-2 block w-full`}
+                  id="recipe-name"
+                  name="name"
+                  type="text"
+                  autoComplete="off"
+                  value={name}
+                  onChange={onNameChanged}
+                />
               </label>
-
-              <input
-                className={`form__input ${validInputChecker(
-                  name
-                )} text-black m-2 w-full`}
-                id="recipe-name"
-                name="name"
-                type="text"
-                autoComplete="off"
-                value={name}
-                onChange={onNameChanged}
-              />
               <label className="form__label m-2" htmlFor="recipe-categories">
                 Categories:
+                <select
+                  id="recipe-categories"
+                  name="categories"
+                  className="form__select text-black rounded-lg m-2 block w-full"
+                  defaultValue={categories[0]}
+                  onChange={onCategoriesChanged}
+                >
+                  {categorySelection}
+                </select>
               </label>
-              <select
-                id="recipe-categories"
-                name="categories"
-                className="form__select text-black rounded-lg m-2"
-                defaultValue={categories[0]}
-                onChange={onCategoriesChanged}
-              >
-                {categorySelection}
-              </select>
               <br />
               <label className="form__label m-2" htmlFor="recipe-cost">
                 Total Cost:
+                <span
+                  className={`bg-white text-black rounded-lg m-2 p-2 block w-full`}
+                  id="recipe-cost"
+                  name="cost"
+                  type="number"
+                  value={totalCost}
+                >
+                  {totalCost}
+                </span>
               </label>
-              <span
-                className={`bg-white text-black rounded-lg m-2 p-2`}
-                id="recipe-cost"
-                name="cost"
-                type="number"
-                value={totalCost}
-              >
-                {totalCost}
-              </span>
 
               <label className="form__label m-2" htmlFor="recipe-currency">
                 Currency:
+                <select
+                  id="recipe-currency"
+                  name="currency"
+                  className="form__select text-black rounded-lg m-2 block w-full"
+                  defaultValue={MY_CURRENCY[0].name}
+                  onChange={onCurrencyChanged}
+                >
+                  {currencySelection}
+                </select>
               </label>
-              <select
-                id="recipe-currency"
-                name="currency"
-                className="form__select text-black rounded-lg m-2"
-                defaultValue={MY_CURRENCY[0].name}
-                onChange={onCurrencyChanged}
-              >
-                {currencySelection}
-              </select>
               <br />
               <label className="form__label m-2" htmlFor="recipe-servings">
                 Servings:
+                <input
+                  className={`form__input ${validInputChecker(
+                    servings
+                  )} text-black m-2 block w-full`}
+                  id="recipe-servings"
+                  type="number"
+                  value={servings}
+                  onChange={onServingsChanged}
+                />
               </label>
-              <input
-                className={`form__input ${validInputChecker(
-                  servings
-                )} text-black m-2 w-full`}
-                id="recipe-servings"
-                type="number"
-                value={servings}
-                onChange={onServingsChanged}
-              />
             </div>
             <div className="col-span-1">
               <label className="form__label" htmlFor="recipe-ingredients">

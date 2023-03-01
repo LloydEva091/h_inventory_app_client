@@ -7,15 +7,19 @@ import {
   useGetRecipesQuery,
 } from "../features/recipes/recipesApiSlice";
 
-const useRecipeDetails = (id) => {
+const useRecipeDetails = (recipeId) => {
   let totalCost = ''
   let name = ''
   let currency = ''
+  let ingredients = ''
+  let categories = ''
+  let servings = ''
+  let id = ''
 
   //   const recipe = useSelector(state => selectRecipeById(state, id))
   const { recipe } = useGetRecipesQuery("getRecipes", {
     selectFromResult: ({ data }) => ({
-      recipe: data?.entities[id],
+      recipe: data?.entities[recipeId],
     }),
   });
 
@@ -23,13 +27,21 @@ const useRecipeDetails = (id) => {
     totalCost = 0
     name = ""
     currency = ['N/A']
+    ingredients = []
+    categories = ['N/A']
+    servings = 0
+    id = ''
   }else {
+    id = recipe.id
     totalCost = recipe.totalCost
     name = recipe.name
     currency = recipe.currency
+    ingredients = recipe.ingredients
+    categories = recipe.categories
+    servings = recipe.servings
   }
 
-  return {name,totalCost,currency};
+  return {id,name,totalCost,currency, ingredients, categories,servings};
 };
 
 export default useRecipeDetails;
