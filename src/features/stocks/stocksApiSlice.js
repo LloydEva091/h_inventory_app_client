@@ -93,39 +93,16 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
                 { type: 'Stock', id: arg.id }
             ]
         }),
-        // updateStock: builder.mutation({
-        //     query: stockToUpdate => ({
-        //       url: `/api/stocks/${stockToUpdate._id}`,
-        //       method: "PATCH",
-        //       body: { ...stockToUpdate }
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //       { type: "Stock", id: arg.id }
-        //     ]
-        //   }),
-        // updateMultipleStock: builder.mutation({
-        //     query: stockToUpdateList => ({
-        //       queryFn: async () => {
-        //         const requests = stockToUpdateList.map(stockItem => ({
-        //           url: `/api/stocks/${stockItem._id}`,
-        //           method: 'PATCH',
-        //           body: { ...stockItem },
-        //         }));
-        //         const responses = await Promise.all(requests.map(request => fetch(request.url, {
-        //           method: request.method,
-        //           body: JSON.stringify(request.body),
-        //           headers: {
-        //             'Content-Type': 'application/json'
-        //           }
-        //         })));
-        //         const data = await Promise.all(responses.map(response => response.json()));
-        //         return data;
-        //       },
-        //     }),
-        //     invalidatesTags: (result, error, arg) => [
-        //       { type: 'Stock', id: arg.id },
-        //     ],
-        //   }), 
+        updateSingleStock: builder.mutation({
+            query: stockToUpdate => ({
+              url: `/api/stocks/${stockToUpdate._id}`,
+              method: "PATCH",
+              body: { ...stockToUpdate }
+            }),
+            invalidatesTags: (result, error, arg) => [
+              { type: "Stock", id: arg.id }
+            ]
+          }),
         deleteStock: builder.mutation({
             query: ({ id }) => ({
                 url: `/api/stocks`,
@@ -140,7 +117,7 @@ export const stocksApiSlice = apiSlice.injectEndpoints({
 })
 
 export const {
-    useGetStocksQuery, useAddNewStockMutation, useUpdateStockMutation, useDeleteStockMutation
+    useGetStocksQuery, useAddNewStockMutation, useUpdateStockMutation, useUpdateSingleStockMutation, useDeleteStockMutation
 } = stocksApiSlice
 
 // returns the query result object

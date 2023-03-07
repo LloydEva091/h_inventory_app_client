@@ -21,6 +21,7 @@ import NewUserForm from "./features/users/NewUserForm";
 import StockList from "./features/stocks/StocksList";
 import NewStock from "./features/stocks/NewStock";
 import EditStock from "./features/stocks/EditStock";
+import StockOrderList from './features/stocks/StockOrderList'
 
 // Recipes Import
 import RecipesList from "./features/recipes/RecipesList";
@@ -68,6 +69,11 @@ function App() {
                   <Route index element={<StockList />} />
                   <Route path=":id" element={<EditStock />} />
                   <Route path="new" element={<NewStock />} />
+                </Route>
+
+                {/* Stock Order Routes */}
+                <Route path="orders">
+                  <Route index element={<StockOrderList />} />
                 </Route>
 
                 {/* Recipe Routes */}

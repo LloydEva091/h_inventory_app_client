@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
-
+import { useState, useEffect } from "react";
 import WeeklyDisplay from "./WeeklyDisplay";
 import getWeekNumber from "../utils/getWeekNumber";
 import getYear from "../utils/getYear";
 import getDayOfWeek from "../utils/getDayOfWeek";
-import useGetWeeklyMenuByWkNumber from '../hooks/useGetWeeklyMenuByWkNumber'
-import useWeeklyMenuDetails from '../hooks/useWeeklyMenuDetails'
+import useGetWeeklyMenuByWkNumber from "../hooks/useGetWeeklyMenuByWkNumber";
+import useMenuDetails from "../hooks/useMenuDetails";
+import useWeeklyMenuDetails from "../hooks/useWeeklyMenuDetails";
 
 const Dashboard = () => {
   const today = new Date();
@@ -32,12 +33,24 @@ const Dashboard = () => {
     dayOfWeek: currentDay,
   });
 
-//   console.log(weeklyMenuInfo)
-  const wklyMenu = useWeeklyMenuDetails(weeklyMenuInfo[0]?.id)
-//   console.log("23432",wklyMenu)
+  // console.log(weeklyMenuInfo)
+  const wklyMenu = useWeeklyMenuDetails(weeklyMenuInfo[0]?.id);
+  // console.log("23432",wklyMenu.monday[0].menu)
 
-  const date = new Date();
-  // const today = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'long' }).format(date)
+  const monday = useMenuDetails(wklyMenu?.monday[0].menu);
+  // console.log("mon",monday);
+  const tuesday = useMenuDetails(wklyMenu?.tuesday[0].menu);
+  // console.log(tuesday);
+  const wednesday = useMenuDetails(wklyMenu?.wednesday[0].menu);
+  // console.log(wednesday);
+  const thursday = useMenuDetails(wklyMenu?.thursday[0].menu);
+  // console.log(thursday);
+  const friday = useMenuDetails(wklyMenu?.friday[0].menu);
+  // console.log(friday);
+  const saturday = useMenuDetails(wklyMenu?.saturday[0].menu);
+  // console.log(saturday);
+  const sunday = useMenuDetails(wklyMenu?.sunday[0].menu);
+  // console.log(sunday);
 
   const sampleData = [
     { name: "January", value: 6500 },
@@ -54,86 +67,25 @@ const Dashboard = () => {
     { name: "December", value: 10000 },
   ];
 
-  const wklyData = [
-    {
-      day: "Monday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Celery Soup", "Steak Pie", "Cajun Chicken"],
-      dinner: ["Roast Ham", "Cottage Pie", "Ice Cream"],
-    },
-    {
-      day: "Tuesday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Lentil Soup", "Beef Stroganoff", "Mince & Tatties"],
-      dinner: ["Poach Haddock & Parsley Sauce", "Roast Lamb", "Artic Roll"],
-    },
-    {
-      day: "Wednesday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Scotch Broth", "Fish & Chips", "Quiche"],
-      dinner: ["Haggis, Nips & Tatties", "Pasta Bolognese", "Fruit Cocktail"],
-    },
-    {
-      day: "Thursday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Potato & Leek Soup", "Pork Chop", "Battered Chicken"],
-      dinner: ["Chili Con Carni", "Roast Pork", "Raspberry & Apple Crumble"],
-    },
-    {
-      day: "Friday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Cauliflower Soup", "Scoth Pie", "Roast Chicken"],
-      dinner: ["Fish Cakes", "Beef Casserole", "Strawberry Gateau"],
-    },
-    {
-      day: "Saturday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Pea & Ham Soup", "Beef Burgers", "Sweet & Sour Chicken"],
-      dinner: ["York Ham Salad", "Scampi & Chips", "Black Forest Gateau"],
-    },
-    {
-      day: "Sunday",
-      breakfast: ["Cereal", "Porridge", "Toast"],
-      lunch: ["Tomato Soup", "Mac & Cheese, Chips", "Cajun Chicken"],
-      dinner: [
-        "Roast Beef",
-        "Scramble Egg, Toast & Beans",
-        "Apple Crumble Custard",
-      ],
-    },
-  ];
-
   const content = (
     <>
-      {/* <section className="welcome">
-
-                    <p>{today}</p>
-
-                    <h1>Welcome {username}!</h1>
-
-                    <p><Link to="/dash/stocks">Manage Stocks</Link></p>
-                       <div className="b mx-auto h-16 w-64 flex justify-center items-center">
-                                <div className="i h-16 w-64 bg-gradient-to-br from-cyan-600 to-cyan-300 items-center rounded-xl shadow-xl cursor-pointer absolute overflow-hidden transform hover:scale-x-110 hover:scale-y-105 transition duration-300 ease-out">
-                                </div>
-                                <Link to="/dash/stocks" className="text-center text-white font-semibold z-10 pointer-events-none">Manage Stock</Link>
-                            </div>
-
-                    {(isAdmin) && <p><Link to="/dash/users">View User Settings</Link></p>}
-                    {(isAdmin) && <p><Link to="/dash/users/new">Add New User</Link></p>}
-
-                </section> */}
-
       <div className="flex flex-wrap w-screen">
         <div className="grid gap-2 sm:grid-rows-1 w-full">
           {/* Weekly Menu Section */}
           <div className="w-full h-full bg-slate-500 bg-opacity-40 mb-2">
             <div className="grid md:grid-cols-7 gap-2 sm:grid-cols-2 w-full p-2">
-              <WeeklyDisplay props={wklyData}></WeeklyDisplay>
+              <WeeklyDisplay props={monday} day={'Monday'}></WeeklyDisplay>
+              <WeeklyDisplay props={tuesday} day={'Tuesday'}></WeeklyDisplay>
+              <WeeklyDisplay props={wednesday} day={'Wednesday'}></WeeklyDisplay>
+              <WeeklyDisplay props={thursday} day={'Thursday'}></WeeklyDisplay>
+              <WeeklyDisplay props={friday} day={'Friday'}></WeeklyDisplay>
+              <WeeklyDisplay props={saturday} day={'Saturday'}></WeeklyDisplay>
+              <WeeklyDisplay props={sunday} day={'Sunday'}></WeeklyDisplay>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-1 sm:grid-cols-1 w-full">
-            {/* Notification */}
+          {/* <div className="grid md:grid-cols-2 gap-1 sm:grid-cols-1 w-full">
+             Notification 
             <div className=" h-72 bg-slate-500 bg-opacity-40">
               <div className="flex items-center justify-center m-5">
                 <div className="grid grid-cols-1 w-full">
@@ -144,7 +96,7 @@ const Dashboard = () => {
                   </div>
                   <div className="bg-white h-48 w-full">
                     <ul className="grid grid-rows-3 text-black list-disc px-7">
-                      {/* Will only display 3 li and slice the rest */}
+                       Will only display 3 li and slice the rest 
                       {[
                         <li className="px-3 py-2" key="noti1">
                           <span>A check of the stock is necessary.</span>
@@ -166,9 +118,9 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            {/* Stats */}
+          {/*             
             <div className="w-full h-72 bg-slate-500 bg-opacity-40 mb-2 justify-center items-center">
               <div className="flex items-center justify-center m-5">
                 <div className="grid grid-cols-1 w-full">
@@ -186,10 +138,7 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full h-90 bg-slate-500 bg-opacity-40 mb-2">
-              {/* <BarChart></BarChart>         */}
-            </div>
-          </div>
+          </div> */}
 
           {/* Buttons Section */}
           <div className="w-full h-50 bg-slate-500 bg-opacity-40">
@@ -233,7 +182,7 @@ const Dashboard = () => {
                 </Link>
 
                 <Link
-                  to="/dash/stocks"
+                  to="/dash/orders"
                   className="b mx-auto h-16 w-64 flex justify-center items-center"
                 >
                   <div className="i h-20 w-64 bg-gradient-to-br from-cyan-600 to-cyan-300 items-center rounded-xl shadow-xl cursor-pointer absolute overflow-hidden transform hover:scale-x-110 hover:scale-y-105 transition duration-300 ease-out"></div>

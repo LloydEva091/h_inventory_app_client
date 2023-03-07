@@ -46,10 +46,12 @@ function StockUpdater({ stocks }) {
 
   return (
     <div>
-      <h1>Stock Updater</h1>
-      <p>Click the button to update stocks:</p>
-      <button onClick={handleUpdateStocks} disabled={isLoading || isUpdating}>
-        {isLoading ? "Updating..." : "Update Stocks"}
+      <button
+        className=" bg-green-500 hover:bg-green-700 text-white font-bold border border-green-700 rounded w-full mb-2 p-3"
+        onClick={handleUpdateStocks}
+        disabled={isLoading || isUpdating}
+      >
+        {isLoading ? "Please wait updating each stock..." : "Confirm Today's Menu"}
       </button>
       {isError && <p>Error updating stocks: {error.message}</p>}
       {showUpdateMessage && (

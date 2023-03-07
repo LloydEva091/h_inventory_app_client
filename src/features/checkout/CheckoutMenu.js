@@ -1,23 +1,18 @@
 import useGetStockInfoFromArray from "../../hooks/useGetStockInfoFromArray";
 import useGetRecipeInfoFromArray from "../../hooks/useGetRecipeInfoFromArray";
 import useGetStockToReduceList from "../../hooks/useGetStockToReduceList";
-import CheckoutMenuDisplay from "./CheckoutMenuDisplay";
-import { useUpdateStockMutation, updateMultipleStocks } from "../stocks/stocksApiSlice";
+import CheckoutMenuCard from "./CheckoutMenuCard";
 import { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
 import StockUpdater from "./StockUpdater";
+import useAuth from "../../hooks/useAuth";
 
 const CheckoutMenu = ({ menuInfo }) => {
-  // Define the mutation
-  const dispatch = useDispatch();
-  const [updateStock, { isLoading: isLoadingUpdate, error, data }] =
-    useUpdateStockMutation();
-
+  const { userId} = useAuth()
   const [isLoading, setIsLoading] = useState(true); // Add a loading state
   const [breakfasts, setBreakfasts] = useState([]);
   const [lunches, setLunches] = useState([]);
   const [dinners, setDinners] = useState([]);
-  const [userId, setUserId] = useState("");
+  // const [userId, setUserId] = useState("");
 
   // Set Menu info using menuInfo
   useEffect(() => {
@@ -25,7 +20,7 @@ const CheckoutMenu = ({ menuInfo }) => {
       setBreakfasts(menuInfo.breakfasts);
       setLunches(menuInfo.lunches);
       setDinners(menuInfo.dinners);
-      setUserId(menuInfo.user);
+      // setUserId(menuInfo.user);
     }
   }, [menuInfo]);
 
@@ -51,7 +46,7 @@ const CheckoutMenu = ({ menuInfo }) => {
     setItem: setDinRecipeInfo,
   });
 
-//   console.log("wekkkk", brRecipeInfo);
+    // console.log("wekkkk", brRecipeInfo);
 
   // All the stock info with iunit and iamount from recipe
   const [allStockInfo, setAllStockInfo] = useState([]);
@@ -71,7 +66,7 @@ const CheckoutMenu = ({ menuInfo }) => {
     setItem: setAllStockInfo,
   });
 
-//   console.log("infooooo", allStockInfo);
+  // console.log("infooooo", allStockInfo);
 
   const [stockToUpdate, setStockToUpdate] = useState([]);
 
@@ -80,32 +75,18 @@ const CheckoutMenu = ({ menuInfo }) => {
     setItem: setStockToUpdate,
   });
 
-//   console.log("updateinfoooo", stockToUpdate);
+  //   console.log("updateinfoooo", stockToUpdate);
+  // console.log(allStockInfo.length )
 
-  // Define the click handler for the button
-//   const handleButtonClick = async () => {
-//     // console.log('updateMultipleStock function called');
-//     console.log('stockToUpdateList', stockToUpdate);
-//     await updateStock(stockToUpdate);
-//   };
-
-// // Define the click handler for the button
-// const handleButtonClick = async () => {
-//     try {
-//       // Call the updateMultipleStocks action creator to trigger the update
-//       await dispatch(updateMultipleStocks(stockToUpdate));
-//       console.log("Stocks updated successfully",stockToUpdate);
-//     } catch (error) {
-//       console.log("Failed to update stocks", error);
-//     }
-//   };
   return (
     <div>
       {isLoading ? (
-        <div>Loading....</div>
+        <div>Loading Weekly Menu...</div>
+      ) : allStockInfo.length <= 0 ? (
+        <div>No Weekly Menu to Display for this week....</div>
       ) : (
         <div>
-          <CheckoutMenuDisplay
+          {/* <CheckoutMenuDisplay
             breakfasts={breakfasts}
             setBreakfasts={setBreakfasts}
             lunches={lunches}
@@ -113,10 +94,32 @@ const CheckoutMenu = ({ menuInfo }) => {
             dinners={dinners}
             setDinners={setDinners}
             user={userId}
-          />
+          /> */}
+          <>
+    <div className="flex items-center rounded-xl m-2 p-2 bg-transparent">
+      <CheckoutMenuCard
+        items={breakfasts}
+        setItem={setBreakfasts}
+        mealType={"breakfasts"}
+        user={userId}
+      ></CheckoutMenuCard>
+      <CheckoutMenuCard
+        items={lunches}
+        setItem={setLunches}
+        mealType={"lunches"}
+        user={userId}
+      ></CheckoutMenuCard>
+      <CheckoutMenuCard
+        items={dinners}
+        setItem={setDinners}
+        mealType={"dinners"}
+        user={userId}
+      ></CheckoutMenuCard>
+      </div>
+    </>
 
           {/* <button onClick={handleButtonClick}>Update stock</button> */}
-          <StockUpdater stocks={stockToUpdate}/>
+          <StockUpdater stocks={stockToUpdate} />
         </div>
       )}
     </div>

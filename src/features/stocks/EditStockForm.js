@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import {
-  // useUpdateStockMutation,
+  useUpdateSingleStockMutation,
   useUpdateStockMutation,
   useDeleteStockMutation,
 } from "./stocksApiSlice";
@@ -13,8 +13,8 @@ import {
 } from "../../config/constant";
 
 const EditStockForm = ({ stock, users }) => {
-  const [updateStock, { isLoading, isSuccess, isError, error }] =
-  useUpdateStockMutation();
+  const [updateSingleStock, { isLoading, isSuccess, isError, error }] =
+    useUpdateSingleStockMutation();
 
   const [
     deleteStock,
@@ -37,11 +37,11 @@ const EditStockForm = ({ stock, users }) => {
   const [per_cost, setPerCost] = useState(stock.per_cost || 0);
   const [userId, setUserId] = useState(stock.user);
 
-  useEffect(()=>{
-    if(per_cost && current_stock){
-      setCost((per_cost*current_stock).toFixed(2))
+  useEffect(() => {
+    if (per_cost && current_stock) {
+      setCost((per_cost * current_stock).toFixed(2));
     }
-  },[per_cost, current_stock])
+  }, [per_cost, current_stock]);
 
   useEffect(() => {
     if (isSuccess || isDelSuccess) {
@@ -57,7 +57,7 @@ const EditStockForm = ({ stock, users }) => {
       setUserId("");
       setPerUnit("");
       setPerStock("");
-      setPerCost("")
+      setPerCost("");
       navigate("/dash/stocks");
     }
   }, [isSuccess, isDelSuccess, navigate]);
@@ -123,11 +123,11 @@ const EditStockForm = ({ stock, users }) => {
       userId,
       per_stock,
       per_unit,
-      per_cost
+      per_cost,
     ].every(Boolean) && !isLoading;
   const onSaveStockClicked = async (e) => {
     if (canSave) {
-      await updateStock({
+      await updateSingleStock({
         id: stock.id,
         user: userId,
         name,
@@ -141,7 +141,7 @@ const EditStockForm = ({ stock, users }) => {
         unit,
         per_stock,
         per_unit,
-        per_cost
+        per_cost,
       });
     }
   };
@@ -174,36 +174,12 @@ const EditStockForm = ({ stock, users }) => {
         <p className={errClass}>{errContent}</p>
 
         <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <div className="">
-            <div className="grid grid-cols-3 gap-2 w-full p-2">
-              <button
-                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded"
-                title="Save"
-                onClick={onSaveStockClicked}
-                disabled={!canSave}
-              >
-                Update
-              </button>
-              <button
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
-                title="Delete"
-                onClick={onDeleteStockClicked}
-              >
-                Delete
-              </button>
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
-                title="Cancel"
-                onClick={onCancelClick}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
           <label className="form__label" htmlFor="stock-name">
             Name:
             <input
-              className={`form__input ${validInputChecker(name)} text-black block w-full`}
+              className={`form__input ${validInputChecker(
+                name
+              )} text-black block w-full`}
               id="stock-name"
               name="name"
               type="text"
@@ -217,7 +193,7 @@ const EditStockForm = ({ stock, users }) => {
             <select
               id="stock-categories"
               name="categories"
-              className="form__select text-black rounded-lg block w-full" 
+              className="form__select text-black rounded-lg block w-full"
               defaultValue={categories.toString()}
               onChange={onCategoriesChanged}
             >
@@ -235,7 +211,9 @@ const EditStockForm = ({ stock, users }) => {
               type="number"
               autoComplete="off"
               value={cost}
-            >{cost || 0}</span>
+            >
+              {cost || 0}
+            </span>
           </label>
           <label className="form__label" htmlFor="stock-cost">
             Per Stock Cost:
@@ -354,7 +332,32 @@ const EditStockForm = ({ stock, users }) => {
               </p>
             </div>
           </div>
-         
+          <div className="">
+            <div className="grid grid-cols-3 gap-2 w-full p-2">
+              <button
+                className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 border border-green-700 rounded"
+                title="Save"
+                onClick={onSaveStockClicked}
+                disabled={!canSave}
+              >
+                Update
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border border-red-700 rounded"
+                title="Delete"
+                onClick={onDeleteStockClicked}
+              >
+                Delete
+              </button>
+              <button
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 border border-teal-700 rounded"
+                title="Cancel"
+                onClick={onCancelClick}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>

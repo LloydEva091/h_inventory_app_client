@@ -10,7 +10,6 @@ const useGetWeeklyMenuByWeekNumber = ({ weekNumber, year, dayOfWeek }) => {
     }
   );
 
- 
   const weeklyMenu = Object.values(weeklyMenus?.entities ?? {}).filter(
     (menu) => menu.weekNumber === weekNumber && menu.year === year
   );
@@ -19,13 +18,11 @@ const useGetWeeklyMenuByWeekNumber = ({ weekNumber, year, dayOfWeek }) => {
     return <div>Loading...</div>;
   }
 
-  // Get the Menu id based on the current day were at from the weeklyMenu
-  // console.log("returning",weeklyMenu[0][dayOfWeek.toLowerCase()][0].menu)
-  if (weeklyMenu) {
-    return weeklyMenu[0][dayOfWeek.toLowerCase()][0].menu
+  if (weeklyMenu.length > 0 && weeklyMenu[0][dayOfWeek.toLowerCase()]) {
+    return weeklyMenu[0][dayOfWeek.toLowerCase()][0].menu;
   }
 
-  return null;
+  return [];
 };
 
 export default useGetWeeklyMenuByWeekNumber;
