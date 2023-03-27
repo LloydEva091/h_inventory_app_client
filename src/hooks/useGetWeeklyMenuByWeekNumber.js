@@ -1,4 +1,5 @@
 import { useGetWeeklyMenusQuery } from "../features/weekly/weeklyMenusApiSlice";
+import useAuth from "./useAuth";
 
 const useGetWeeklyMenuByWeekNumber = ({ weekNumber, year, dayOfWeek }) => {
   const { data: weeklyMenus = {}, isLoading } = useGetWeeklyMenusQuery(
@@ -10,7 +11,16 @@ const useGetWeeklyMenuByWeekNumber = ({ weekNumber, year, dayOfWeek }) => {
     }
   );
 
-  const weeklyMenu = Object.values(weeklyMenus?.entities ?? {}).filter(
+  const { userId } = useAuth();
+
+  // console.log(weeklyMenus)
+  const weeklyMenusForUser = Object.values(weeklyMenus?.entities ?? {}).filter(
+    (menu) => menu.user === userId
+  );
+
+  // console.log(weeklyMenusForUser)
+
+  const weeklyMenu = weeklyMenusForUser.filter(
     (menu) => menu.weekNumber === weekNumber && menu.year === year
   );
 

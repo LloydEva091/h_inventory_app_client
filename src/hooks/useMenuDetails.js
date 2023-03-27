@@ -5,7 +5,7 @@ import {
   useGetMenusQuery,
 } from "../features/menus/menusApiSlice";
 
-const useMenuDetails = (id) => {
+const useMenuDetails = (menuId) => {
   let menuCost = ''
   let name = ''
   let currency = ''
@@ -13,11 +13,12 @@ const useMenuDetails = (id) => {
   let lunches = []
   let dinners = []
   let user = ''
+  let id = ''
 
   //   const menu = useSelector(state => selectMenuById(state, id))
   const { menu } = useGetMenusQuery("getMenus", {
     selectFromResult: ({ data }) => ({
-      menu: data?.entities[id],
+      menu: data?.entities[menuId],
     }),
   });
 
@@ -30,6 +31,7 @@ const useMenuDetails = (id) => {
     lunches = []
     dinners = []
     user = ''
+    id = ''
   }else {
     user = menu.user
     menuCost = menu.menuCost
@@ -38,9 +40,10 @@ const useMenuDetails = (id) => {
     breakfasts = menu.breakfasts
     lunches = menu.lunches
     dinners = menu.dinners
+    id = menu.id
   }
 
-  return {user,name,menuCost,currency, breakfasts,lunches, dinners};
+  return {user,name,menuCost,currency, breakfasts,lunches, dinners,id};
 
 };
 

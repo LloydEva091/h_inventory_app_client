@@ -21,7 +21,10 @@ import NewUserForm from "./features/users/NewUserForm";
 import StockList from "./features/stocks/StocksList";
 import NewStock from "./features/stocks/NewStock";
 import EditStock from "./features/stocks/EditStock";
-import StockOrderList from './features/stocks/StockOrderList'
+// Stock Order
+import StockOrderList from "./features/stocks/StockOrderList";
+// Stock Check
+import StockCheckList from "./features/stocks/StockCheckList";
 
 // Recipes Import
 import RecipesList from "./features/recipes/RecipesList";
@@ -76,6 +79,11 @@ function App() {
                   <Route index element={<StockOrderList />} />
                 </Route>
 
+                {/* Stock Checks Routes */}
+                <Route path="checks">
+                  <Route index element={<StockCheckList />} />
+                </Route>
+
                 {/* Recipe Routes */}
                 <Route path="recipes">
                   <Route index element={<RecipesList />} />
@@ -99,17 +107,17 @@ function App() {
 
                 {/* Admin Routes */}
                 <Route
-                  path="admin"
+                  path="admin/users"
                   element={
                     <RequireAuth allowedRoles={[ROLES.Admin, ROLES.Manager]} />
                   }
                 >
-                  <Route index element={<Welcome />} />
-                  <Route path="users">
+                  {/* <Route index element={<Welcome />} /> */}
+                  {/* <Route path="users"> */}
                     <Route index element={<UsersList />} />
                     <Route path=":id" element={<EditUser />} />
                     <Route path="new" element={<NewUserForm />} />
-                  </Route>
+                  {/* </Route> */}
                 </Route>
               </Route>
               {/* End Dash */}

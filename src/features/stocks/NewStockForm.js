@@ -77,7 +77,7 @@ const NewStockForm = ({ users }) => {
       unit,
       per_stock,
       per_unit,
-      per_cost
+      // per_cost
     ].every(Boolean) && !isLoading;
 
   const onAddStockClicked = async (e) => {
@@ -96,7 +96,7 @@ const NewStockForm = ({ users }) => {
         unit,
         per_stock,
         per_unit,
-        per_cost
+        // per_cost
       });
     }
   };

@@ -25,6 +25,7 @@ const Login = () => {
     useEffect(() => {
         userRef.current.focus()
     }, [])
+    
     // Reset the error msg after the user change the email and password
     useEffect(() => {
         setErrMsg('');
@@ -93,7 +94,6 @@ const Login = () => {
                                 value={password}
                                 required
                             />
-
 
                             <label htmlFor="persist" className="form__persist">
                                 <input

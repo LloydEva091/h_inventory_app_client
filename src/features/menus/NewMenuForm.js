@@ -80,7 +80,7 @@ const NewMenuForm = ({ users }) => {
   const onNameChanged = (e) => setName(e.target.value);
 
   const canSave =
-    [userId, name, breakfasts, lunches, dinners].every(
+    [userId, name, breakfasts.length>0, lunches.length>0, dinners.length>0].every(
       Boolean
     ) && !isLoading;
 

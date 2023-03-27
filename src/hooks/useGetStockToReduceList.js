@@ -19,7 +19,10 @@ const useGetStockToReduceList = ({ stockList, setItem }) => {
             newAmount = stock.iamount/1000;
           } else if (stock.iunit == "ml") {
             newAmount = stock.iamount/1000;
-          }
+          } else if(stock.iunit == 'ea'){
+            // So if the unit is not correct we are not able to reduce.
+            newAmount = 0
+          } 
         }
 
 

@@ -58,7 +58,7 @@ const EditStockForm = ({ stock, users }) => {
       setPerUnit("");
       setPerStock("");
       setPerCost("");
-      navigate("/dash/stocks");
+      navigate(-1);
     }
   }, [isSuccess, isDelSuccess, navigate]);
 
@@ -72,7 +72,7 @@ const EditStockForm = ({ stock, users }) => {
   const onUnitChanged = (e) => setUnit(e.target.value);
   const onPer_unitChanged = (e) => setPerUnit(e.target.value);
   const onPetStockChanged = (e) => setPerStock(e.target.value);
-  const onCancelClick = async (e) => await navigate("/dash/stocks");
+  const onCancelClick = async (e) => await navigate(-1);
 
   const categorySelection = MY_CATEGORY.map((opt) => {
     return (

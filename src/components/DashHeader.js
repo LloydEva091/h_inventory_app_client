@@ -43,7 +43,7 @@ const DashHeader = () => {
     const onNewUserClicked = () => navigate('/dash/admin/users/new')
     const onStocksClicked = () => navigate('/dash/stocks')
     const onUsersClicked = () => navigate('/dash/admin/users')
-    const onAdminClicked = () => navigate('/dash/admin')
+    const onAdminClicked = () => navigate('/dash/admin/users')
 
     if (isLoading) return <p>Logging Out...</p>
     if (isError) return <p>Error: {error.data?.message}</p>

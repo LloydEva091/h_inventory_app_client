@@ -1,6 +1,6 @@
 import { useGetWeeklyMenusQuery } from "../features/weekly/weeklyMenusApiSlice";
-
-const useGetWeeklyMenuByWkNumber = ({ weekNumber, year, dayOfWeek }) => {
+import useAuth from "./useAuth";
+const useGetWeeklyMenuForDash = ({ weekNumber, year, dayOfWeek }) => {
   const { data: weeklyMenus = {}, isLoading } = useGetWeeklyMenusQuery(
     "getWeeklyMenus",
     {
@@ -10,10 +10,16 @@ const useGetWeeklyMenuByWkNumber = ({ weekNumber, year, dayOfWeek }) => {
     }
   );
 
- 
-  const weeklyMenu = Object.values(weeklyMenus?.entities ?? {}).filter(
+  const { userId } = useAuth();
+
+  const weeklyMenusForUser = Object.values(weeklyMenus?.entities ?? {}).filter(
+    (menu) => menu.user === userId
+  );
+
+  const weeklyMenu = weeklyMenusForUser.filter(
     (menu) => menu.weekNumber === weekNumber && menu.year === year
   );
+
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -28,4 +34,4 @@ const useGetWeeklyMenuByWkNumber = ({ weekNumber, year, dayOfWeek }) => {
   return null;
 };
 
-export default useGetWeeklyMenuByWkNumber;
+export default useGetWeeklyMenuForDash;

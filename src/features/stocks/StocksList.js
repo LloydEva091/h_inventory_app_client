@@ -89,7 +89,6 @@ const StocksList = () => {
         </nav>
       </div>
     );
-
     content = (
       <>
         <div className="flex flex-col justify-center items-center m-3">
@@ -105,7 +104,6 @@ const StocksList = () => {
                 <thead className="bg-gray-400 text-gray-600 uppercase leading-normal">
                   <tr className="text-sm ">
                     <th className="py-3 px-2 text-left">Name</th>
-                    {/* <th className="py-3 px-6 text-left">User</th> */}
                     <th className="py-3 px-2 text-left">Category</th>
                     <th className="py-3 px-2 text-left">Total Cost</th>
                     <th className="py-3 px-2 text-left">Per Stock Cost</th>

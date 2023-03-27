@@ -220,7 +220,7 @@ const NewMenuForm = ({ users }) => {
 
   const content = (
     <div className="min-h-screen px-2 pb-2 flex flex-col items-center justify-center ">
-      <h2 className="uppercase">Add New Menu </h2>
+      <h2 className="uppercase">Add New Weekly Menu Plan </h2>
       <div className="p-4 w-2/3 border rounded bg-slate-500 bg-opacity-25">
         <p className={errClass}>{error?.data?.message}</p>
 

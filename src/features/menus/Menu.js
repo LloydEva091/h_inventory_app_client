@@ -99,7 +99,7 @@ const Menu = ({ props }) => {
         {/* <td className=" py-3 px-2 text-left">{menu.id}</td> */}
         <td className=" py-3 px-2 text-left">{menu.name}</td>
         <td className=" py-3 px-2 text-left">{`${currencySign(menu.currency)} ${
-          menu.menuCost
+          menu.menuCost.toFixed(2)
         }`}</td>
         <td className=" py-3 px-6 text-left">
           {disclosureContent(menu,"Breakfasts")}

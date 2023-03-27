@@ -21,6 +21,7 @@ import {
 import ModalView from '../../components/ModalView'
 import MealForm from "./MealForm";
 import sortList from "../../utils/sortList";
+import { useParams } from "react-router-dom";
 
 const EditMenuForm = ({ menu }) => {
   const {
@@ -34,6 +35,8 @@ const EditMenuForm = ({ menu }) => {
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
+
+  const { id } = useParams();
 
   const [
     addNewMenu,
@@ -53,10 +56,11 @@ const EditMenuForm = ({ menu }) => {
     { isSuccess: isDelSuccess, isError: isDelError, error: delerror },
   ] = useDeleteMenuMutation();
 
-  //   console.log(menu);
+    // console.log(menu);
 
   const navigate = useNavigate();
 
+  const [menuId, setMenuId] = useState(id)
   const [name, setName] = useState(menu.name);
   const [menuCost, setMenuCost] = useState(menu.menuCost);
   const [currency, setCurrency] = useState(menu.currency[0]);
@@ -108,7 +112,7 @@ const EditMenuForm = ({ menu }) => {
   const onSaveMenuClicked = async (e) => {
     if (canSave) {
       await updateMenu({
-        id: menu.id,
+        id: menuId,
         user: userId,
         name,
         menuCost,
@@ -121,7 +125,7 @@ const EditMenuForm = ({ menu }) => {
   };
 
   const onDeleteMenuClicked = async () => {
-    await deleteMenu({ id: menu.id });
+    await deleteMenu({ id: menuId });
   };
 
   // const created = new Date(menu.createdAt).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })

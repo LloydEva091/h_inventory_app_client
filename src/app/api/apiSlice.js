@@ -1,56 +1,50 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { setCredentials } from '../../features/auth/authSlice'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setCredentials } from "../../features/auth/authSlice";
 
+// define the base query to be used in all endpoints
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:3500',
-    credentials: 'include', //this allow us to always send our cookie that contain the refresh token
-    // Using prepareHeaders function of fetchBaseQuery to get the token and set headers
-    // This apply to all request being sent, thereby allowing all our request to contain JWT token
-    prepareHeaders: (headers, { getState }) => {
-        const token = getState().auth.token
-        // if token exist then set the authorization header with Bearer token
-        if (token) {
-            headers.set("authorization", `Bearer ${token}`)
-        }
-        return headers
+  baseUrl: "http://localhost:3500", // set the base URL of the API
+  credentials: "include", // send cookies along with requests for authentication
+  prepareHeaders: (headers, { getState }) => {
+    // add authorization header to all requests if a token exists in the Redux store
+    const token = getState().auth.token;
+    if (token) {
+      headers.set("authorization", `Bearer ${token}`);
     }
-})
+    return headers;
+  },
+});
 
+// wrap the base query with a function to handle authentication and refresh tokens
 const baseQueryWithReauth = async (args, api, extraOptions) => {
-    // console.log(args) // request url, method, body
-    // console.log(api) // signal, dispatch, getState()
-    // console.log(extraOptions) //custom like {shout: true}
-
-    let result = await baseQuery(args, api, extraOptions)
-
-    // If you want, handle other status codes, too
-    if (result?.error?.status === 403) {
-        console.log('sending refresh token')
-
-        // send refresh token to get new access token 
-        const refreshResult = await baseQuery('/api/auth/refresh', api, extraOptions)
-
-        if (refreshResult?.data) {
-
-            // store the new token 
-            api.dispatch(setCredentials({ ...refreshResult.data }))
-
-            // retry original query with new access token
-            result = await baseQuery(args, api, extraOptions)
-        } else {
-
-            if (refreshResult?.error?.status === 403) {
-                refreshResult.error.data.message = "Your login has expired. "
-            }
-            return refreshResult
-        }
+  let result = await baseQuery(args, api, extraOptions); // call the base query to send the request
+  if (result?.error?.status === 403) {
+    // if the response has a 403 status code, it means the access token has expired
+    console.log("sending refresh token");
+    // send a request to the server to refresh the token
+    const refreshResult = await baseQuery(
+      "/api/auth/refresh",
+      api,
+      extraOptions
+    ); 
+    // if the server returns a new token, update the Redux store with the new token and retry the original request with the new token
+    if (refreshResult?.data) {
+      api.dispatch(setCredentials({ ...refreshResult.data }));
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      // if the server returns an error or does not return a new token, handle the error accordingly
+      if (refreshResult?.error?.status === 403) {
+        refreshResult.error.data.message = "Your login has expired. ";
+      }
+      return refreshResult;
     }
+  }
+  return result;
+};
 
-    return result
-}
-
+// create an instance of the API with the wrapped base query and endpoint definitions
 export const apiSlice = createApi({
-    baseQuery: baseQueryWithReauth,
-    tagTypes: ['Recipe','Stock', 'User','Menu'],
-    endpoints: builder => ({})
-})
+  baseQuery: baseQueryWithReauth,
+  tagTypes: ["Recipe", "Stock", "User", "Menu", "WeeklyMenu"],
+  endpoints: (builder) => ({}),
+});

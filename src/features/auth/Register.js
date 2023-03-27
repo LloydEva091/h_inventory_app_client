@@ -18,22 +18,21 @@ const Register = () => {
         isError,
         error
     }] = useAddNewUserMutation()
-
     const navigate = useNavigate()
     const userRef = useRef()
+    
     const [email, setEmail] = useState('')
-    const [validEmail, setValidEmail] = useState(false)
+    const [name, setName] = useState('')
+    const [roles, setRoles] = useState(["User"]) // Default user creation as normal User
     const [password, setPassword] = useState('')
     const [password2, setPassword2] = useState('')
+
+    const [validEmail, setValidEmail] = useState(false)
     const [validPassword, setValidPassword] = useState(false)
     const [validPassword2, setValidPassword2] = useState(false)
-    const [name, setName] = useState('')
     const [validName, setValidName] = useState(false)
-    const [roles, setRoles] = useState(["User"]) // Default user creation as normal User
-
     const [alertVisible, setAlertVisible] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
-
     const [errorAlertVisible, setErrorAlertVisible] = useState(false);
     const [errorAlertMessage, setErrorAlertMessage] = useState('');
 

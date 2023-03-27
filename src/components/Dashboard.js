@@ -7,7 +7,7 @@ import WeeklyDisplay from "./WeeklyDisplay";
 import getWeekNumber from "../utils/getWeekNumber";
 import getYear from "../utils/getYear";
 import getDayOfWeek from "../utils/getDayOfWeek";
-import useGetWeeklyMenuByWkNumber from "../hooks/useGetWeeklyMenuByWkNumber";
+import useGetWeeklyMenuForDash from "../hooks/useGetWeeklyMenuForDash";
 import useMenuDetails from "../hooks/useMenuDetails";
 import useWeeklyMenuDetails from "../hooks/useWeeklyMenuDetails";
 
@@ -27,7 +27,7 @@ const Dashboard = () => {
   // console.log("dayy", currentDay)
 
   // Using this info current week number, day and year fetch the currentWeeklyMenu for today, this will return a menu id
-  const weeklyMenuInfo = useGetWeeklyMenuByWkNumber({
+  const weeklyMenuInfo = useGetWeeklyMenuForDash({
     weekNumber: currentWeekNumber,
     year: currentYear,
     dayOfWeek: currentDay,
@@ -210,7 +210,7 @@ const Dashboard = () => {
                 </Link>
 
                 <Link
-                  to="/dash/stocks"
+                  to="/dash/checks"
                   className="b mx-auto h-16 w-64 flex justify-center items-center"
                 >
                   <div className="i h-20 w-64 bg-gradient-to-br from-yellow-600 to-orange-400 items-center rounded-xl shadow-xl cursor-pointer absolute overflow-hidden transform hover:scale-x-110 hover:scale-y-105 transition duration-300 ease-out"></div>

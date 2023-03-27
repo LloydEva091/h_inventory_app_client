@@ -1,7 +1,6 @@
-import React, {useCallback} from "react";
+import React, { useCallback } from "react";
 import { useGetStocksQuery } from "../features/stocks/stocksApiSlice";
 import { useState, useEffect } from "react";
-
 const useGetStockInfoFromArray = ({ itemArrays, setItem }) => {
   const {
     data: stocks,
@@ -54,13 +53,12 @@ const useGetStockInfoFromArray = ({ itemArrays, setItem }) => {
                 (ingredient) => ingredient.stock === stock.id
               )?.iunit || null,
           };
-        }).flat(); //flat() is used to flatten the array of arrays created by map(), so that matchedStocks is a single array of objects.
-        
+        })
+        .flat(); //flat() is used to flatten the array of arrays created by map(), so that matchedStocks is a single array of objects.
       // Update the state with the matched stocks
       memoizedSetItem(matchedStocks);
     }
   }, [stocks, itemArrays, memoizedSetItem]);
-
   return memoizedSetItem;
 };
 

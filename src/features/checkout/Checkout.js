@@ -7,28 +7,22 @@ import CheckoutMenu from './CheckoutMenu'
 
 const Checkout = () => {
   const today = new Date();
-
   // Get current week number
   const currentWeekNumber = getWeekNumber(today);
-
   // Get current year
   const currentYear = getYear(today);
-
   // Get current day
   const currentDay = getDayOfWeek(today);
-
-  // Using this info current week number, day and year fetch the currentWeeklyMenu for today, this will return a menu id
+  // Using this info current week number, 
+  // day and year fetch the currentWeeklyMenu for today, this will return a menu id
   const weeklyMenuInfo = useGetWeeklyMenuByWeekNumber({
     weekNumber: currentWeekNumber,
     year: currentYear,
     dayOfWeek: currentDay,
   });
-
   // Using this menu id fetch the menu information
   // This will give breakfasts,lunches,dinners with recipe id
   const menuInfo = useMenuDetails(weeklyMenuInfo);
-
-
   const content = (
     <>
       {/* Using this recipe id fetch the recipe information */}

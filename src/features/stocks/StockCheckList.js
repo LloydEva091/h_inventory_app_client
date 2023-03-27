@@ -1,12 +1,12 @@
 import { useGetStocksQuery, selectStockByUserId } from "./stocksApiSlice";
-import Stock from "./Stock";
+import StockCheck from "./StockCheck";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useAuth from "../../hooks/useAuth";
 import sortList from "../../utils/sortList";
 import { useState } from "react";
 
-const StocksList = () => {
+const StockChecksList = () => {
   const { userId } = useAuth();
   const {
     data: stocks,
@@ -15,7 +15,7 @@ const StocksList = () => {
     isError,
     error,
   } = useGetStocksQuery("stocksList", {
-    pollingInterval: 15000,
+    pollingInterval: 5000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true,
   });
@@ -51,7 +51,7 @@ const StocksList = () => {
 
     const tableContent = stocksToDisplay?.length
       ? stocksToDisplay.map((stock) => (
-          <Stock key={stock.id} stockId={stock.id} />
+          <StockCheck key={stock.id} stockId={stock.id} />
         ))
       : null;
 
@@ -107,16 +107,13 @@ const StocksList = () => {
                     <th className="py-3 px-2 text-left">Name</th>
                     {/* <th className="py-3 px-6 text-left">User</th> */}
                     <th className="py-3 px-2 text-left">Category</th>
-                    <th className="py-3 px-2 text-left">Total Cost</th>
-                    <th className="py-3 px-2 text-left">Per Stock Cost</th>
                     <th className="py-3 px-2 text-left">Current Stock</th>
                     <th className="py-3 px-2 text-left">Unit</th>
                     <th className="py-3 px-2 text-left">Per Stock</th>
                     <th className="py-3 px-2 text-left">Per Stock Unit</th>
-                    <th className="py-3 px-2 text-left">Min</th>
-                    <th className="py-3 px-2 text-left">Max</th>
                     <th className="py-3 px-2 text-left">Status</th>
                     <th className="py-3 px-2 text-left">Updated</th>
+                    <th className="py-3 px-2 text-left">Checked?</th>
                     <th className="py-3 px-2 text-left">Edit</th>
                   </tr>
                 </thead>
@@ -134,4 +131,4 @@ const StocksList = () => {
 
   return content;
 };
-export default StocksList;
+export default StockChecksList;

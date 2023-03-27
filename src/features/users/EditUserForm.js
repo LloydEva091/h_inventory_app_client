@@ -4,7 +4,6 @@ import { useNavigate, Link } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTrashCan } from "@fortawesome/free-solid-svg-icons"
 import { ROLES } from "../../config/constant"
-
 // import useAuth from "../../hooks/useAuth"
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
@@ -13,7 +12,7 @@ const PWD_REGEX = /^[A-z0-9!@#$%]{4,12}$/
 
 const EditUserForm = ({ user }) => {
 
-    // const { isManager, isAdmin } = useAuth();
+    // const { userId } = useAuth();
 
     const [updateUser, {
         isLoading,
@@ -172,7 +171,7 @@ const EditUserForm = ({ user }) => {
                             value={password}
                             onChange={onPasswordChanged}
                         />
-
+{/* 
                         <label className="form__label form__checkbox-container" htmlFor="user-active">
                             ACTIVE:
                             <input
@@ -183,7 +182,7 @@ const EditUserForm = ({ user }) => {
                                 checked={active}
                                 onChange={onActiveChanged}
                             />
-                        </label>
+                        </label> */}
 
                         <label className="form__label" htmlFor="roles">
                             ASSIGNED ROLES:</label>

@@ -9,6 +9,7 @@ import { useGetMenusQuery } from "../menus/menusApiSlice";
 import WeeklyMenuSelectionForm from "./WeeklyMenuSelectionForm";
 import ModalView from "../../components/ModalView";
 import getWeekNumber from "../../utils/getWeekNumber";
+import { useParams } from "react-router-dom";
 
 const EditWeeklyMenuForm = ({ weeklyMenu }) => {
   const {
@@ -41,7 +42,10 @@ const EditWeeklyMenuForm = ({ weeklyMenu }) => {
     { isSuccess: isDelSuccess, isError: isDelError, error: delerror },
   ] = useDeleteWeeklyMenuMutation();
 
+  const { id } = useParams()
+
   const [userId, setUserId] = useState(weeklyMenu.user);
+
 
   // Filter all menu by current user and use this as a selection
   const filterMenusByUser = Object.values(menus?.entities ?? {}).filter(
@@ -62,8 +66,10 @@ const EditWeeklyMenuForm = ({ weeklyMenu }) => {
   const [sunday, setSunday] = useState(weeklyMenu.sunday);
   const [startDate, setStartDate] = useState(weeklyMenu.startDate);
 
+    console.log(weeklyMenu.weekNumber)
+
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess || isDelSuccess) {
       setWeekNumber("");
       setYear("");
       setMonday("");
@@ -76,7 +82,7 @@ const EditWeeklyMenuForm = ({ weeklyMenu }) => {
       setStartDate("");
       navigate("/dash/weekly");
     }
-  }, [isSuccess, navigate]);
+  }, [isSuccess, isDelSuccess, navigate]);
 
   // Set value of weekNumber and year  once startDate is selected or changed
   useEffect(() => {
@@ -142,17 +148,24 @@ const EditWeeklyMenuForm = ({ weeklyMenu }) => {
   };
 
   const onDeleteMenuClicked = async () => {
-    await deleteWeeklyMenu({ id: weeklyMenu.id });
+    await deleteWeeklyMenu({ id: id });
   };
 
 
   const getDateDisplay = (tdate) => {
+    // Create a new Date object using the input `tdate`
     const date = new Date(tdate);
+    // Get the day of the month as a string, padded with a leading 0 if necessary
     const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Add 1 because getMonth() returns zero-based month index
+    // Get the month as a string, padded with a leading 0 if necessary
+    // Add 1 to the month index because JavaScript's Date object returns a zero-based index for the month (0 = January)
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    // Get the year as a 4-digit number
     const year = date.getFullYear();
+    // Return the formatted date as a string in the format "YYYY-MM-DD"
     return `${year}-${month}-${day}`;
   };
+  
 
   const errClass = isError || isDelError ? "errmsg" : "offscreen";
 
@@ -259,7 +272,7 @@ const EditWeeklyMenuForm = ({ weeklyMenu }) => {
                   type="text"
                   value={weekNumber}
                 >
-                  {weekNumber || "N/A"}
+                  {weekNumber+1 || "N/A"}
                 </span>
               </label>
               <label className="form__label m-2" htmlFor="menu-year">
