@@ -1,49 +1,46 @@
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-  } from 'chart.js';
-  import { useState } from 'react';
-  import { Bar } from 'react-chartjs-2';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { useState } from "react";
+import { Bar } from "react-chartjs-2";
 
-import React from 'react'
+import React from "react";
 
-  ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-  );
-  
-const BarChart = ({props}) => {
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-    // Extract the labels and data values from the passed in data
-    const labels = props.map(item => item.name)
-    const values = props.map(item => item.value)
+const BarChart = ({ props }) => {
 
-    const [data, setData] = useState({
-      labels: labels,
-      datasets: [{
-        label: 'Expenses',
+  // Extract the labels and data values from the passed in data
+  const labels = props.map((item) => "Week " + item.weekNumber);
+  const values = props.map((item) => item.weeklyMenuCost);
+
+  const [data, setData] = useState({
+    labels: labels,
+    datasets: [
+      {
+        label: "Weekly Expenses",
         data: values,
-        backgroundColor: [
-          'rgb(153, 102, 255)'
-        ],
-        borderColor: [
-          'rgb(153, 102, 255)'
-        ],
-        borderWidth: 1
-      }]
-    });
+        backgroundColor: ["rgb(153, 102, 255)"],
+        borderColor: ["rgb(153, 102, 255)"],
+        borderWidth: 1,
+      },
+    ],
+  });
 
+  return <Bar data={data} legend={{ position: "center" }} />;
+};
 
-    return <Bar data={data} legend={{ position: 'center' }} />;
-  };
-
-  export default BarChart
+export default BarChart;

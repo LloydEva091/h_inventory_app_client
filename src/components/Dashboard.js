@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
-import LineChart from "./LineChart";
 import BarChart from "./BarChart";
-import { useState, useEffect } from "react";
 import WeeklyDisplay from "./WeeklyDisplay";
 import getWeekNumber from "../utils/getWeekNumber";
 import getYear from "../utils/getYear";
@@ -10,6 +7,9 @@ import getDayOfWeek from "../utils/getDayOfWeek";
 import useGetWeeklyMenuForDash from "../hooks/useGetWeeklyMenuForDash";
 import useMenuDetails from "../hooks/useMenuDetails";
 import useWeeklyMenuDetails from "../hooks/useWeeklyMenuDetails";
+
+import { useSelector } from "react-redux";
+import { selectAllWeeklyMenus } from "../features/weekly/weeklyMenusApiSlice";
 
 const Dashboard = () => {
   const today = new Date();
@@ -21,6 +21,14 @@ const Dashboard = () => {
   // Get current year
   const currentYear = getYear(today);
   // console.log("year", currentYear)
+
+  // Get all weekly menus from the Redux state
+  const allWklyMenus = useSelector(selectAllWeeklyMenus);
+  const filteredWeeklyMenus = allWklyMenus.filter(
+    (menu) => menu.year === currentYear
+  );
+
+  console.log("this year", filteredWeeklyMenus);
 
   // Get current day
   const currentDay = getDayOfWeek(today);
@@ -74,13 +82,16 @@ const Dashboard = () => {
           {/* Weekly Menu Section */}
           <div className="w-full h-full bg-slate-500 bg-opacity-40 mb-2">
             <div className="grid md:grid-cols-7 gap-2 sm:grid-cols-2 w-full p-2">
-              <WeeklyDisplay props={monday} day={'Monday'}></WeeklyDisplay>
-              <WeeklyDisplay props={tuesday} day={'Tuesday'}></WeeklyDisplay>
-              <WeeklyDisplay props={wednesday} day={'Wednesday'}></WeeklyDisplay>
-              <WeeklyDisplay props={thursday} day={'Thursday'}></WeeklyDisplay>
-              <WeeklyDisplay props={friday} day={'Friday'}></WeeklyDisplay>
-              <WeeklyDisplay props={saturday} day={'Saturday'}></WeeklyDisplay>
-              <WeeklyDisplay props={sunday} day={'Sunday'}></WeeklyDisplay>
+              <WeeklyDisplay props={monday} day={"Monday"}></WeeklyDisplay>
+              <WeeklyDisplay props={tuesday} day={"Tuesday"}></WeeklyDisplay>
+              <WeeklyDisplay
+                props={wednesday}
+                day={"Wednesday"}
+              ></WeeklyDisplay>
+              <WeeklyDisplay props={thursday} day={"Thursday"}></WeeklyDisplay>
+              <WeeklyDisplay props={friday} day={"Friday"}></WeeklyDisplay>
+              <WeeklyDisplay props={saturday} day={"Saturday"}></WeeklyDisplay>
+              <WeeklyDisplay props={sunday} day={"Sunday"}></WeeklyDisplay>
             </div>
           </div>
 
@@ -120,7 +131,7 @@ const Dashboard = () => {
               </div>
             </div> */}
 
-          {/*             
+          <div className="grid md:grid-cols-1 gap-1 sm:grid-cols-1 w-full">
             <div className="w-full h-72 bg-slate-500 bg-opacity-40 mb-2 justify-center items-center">
               <div className="flex items-center justify-center m-5">
                 <div className="grid grid-cols-1 w-full">
@@ -131,14 +142,14 @@ const Dashboard = () => {
                   </div>
                   <div className="flex w-full h-48 bg-white">
                     <BarChart
-                      props={sampleData}
+                      props={filteredWeeklyMenus}
                       className="flex item-center"
                     ></BarChart>
                   </div>
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
 
           {/* Buttons Section */}
           <div className="w-full h-50 bg-slate-500 bg-opacity-40">

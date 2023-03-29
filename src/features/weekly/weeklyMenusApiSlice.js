@@ -80,16 +80,16 @@ const selectWeeklyMenusData = createSelector(
 //console.log(selectWeeklyMenusData)
 
 // Select only menu with the this user id
-// export const selectMenusByUserId = createSelector(
-//     [selectWeeklyMenusData, (state, userId) => userId],
-//     (menus, userId) => {
-//         // console.log(menus)
-//         if (!menus) return []
-//         let result = Object.values(menus).filter(menu => menu.user == userId)
-//         // console.log(result)
-//         return result
-//     }
-// )
+export const selectMenusByUserId = createSelector(
+    [selectWeeklyMenusData, (state, userId) => userId],
+    (menus, userId) => {
+        // console.log(menus)
+        if (!menus) return []
+        let result = Object.values(menus).filter(menu => menu.user == userId)
+        // console.log(result)
+        return result
+    }
+)
 
 
 //getSelectors creates these selectors and we rename them with aliases using destructuring
