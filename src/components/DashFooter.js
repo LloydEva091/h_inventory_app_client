@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth
  from "../hooks/useAuth"
 const DashFooter = () => {
-    const { email, status } = useAuth()
+    const { email, roles } = useAuth()
 
     const navigate = useNavigate()
     const { pathname } = useLocation()
@@ -28,7 +28,7 @@ const DashFooter = () => {
         <footer className="dash-footer">
             {goHomeButton}
             <p>Current User: {email}</p>
-            <p>Status: {status}</p>
+            <p>Status: {roles}</p>
         </footer>
     )
     return content
