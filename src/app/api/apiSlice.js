@@ -3,7 +3,8 @@ import { setCredentials } from "../../features/auth/authSlice";
 
 // define the base query to be used in all endpoints
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3500", // set the base URL of the API
+  // baseUrl: "http://localhost:3500",
+  baseUrl: "https://lloyd-hons-proj.duckdns.org",
   credentials: "include", // send cookies along with requests for authentication
   prepareHeaders: (headers, { getState }) => {
     // add authorization header to all requests if a token exists in the Redux store
